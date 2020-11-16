@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<link rel="stylesheet" href="style.css">
+    <title>Создание клиента</title>
+
+    <style>input {
+        border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+      }
+      </style>
+</head>
+<body>
+    <form id='addClient'@submit.prevetn="checkForm" >
+      
+    <div class="all"  :class="{ 'form-group--error': $v.name.$error }">
+        <div class=" block first">
+            <div class="input"><span class="circle inline"><p>1</p></span>
+                <div class="arrow-1"> <div></div> </div>
+            </div>
+            <h1>Клиент</h1>
+        <div class="input">
+            <label for="Sername">Фамилия:</label>
+            <input type="text" v-model.trim="$v.surname.$model" :class="status($v.surname)" id='surname' name="Sername">
+        </div>
+        <div class="error" v-if="!$v.surname.required">Поле обязательное</div>
+        <div class="input">
+            <label for="Name">Имя:</label>
+            <input type="text" id='name'  v-model.trim="$v.name.$model":class="status($v.name)"  name='Name'>
+        </div>
+        <div class="error" v-if="!$v.name.required">Поле обязательное </div>
+        <div class="input">
+            <label for="Patronymic">Отчество:</label>
+            <input type="text" id='parant'v-model='parant' name="Patronymic" >
+        </div>
+        <div class="input">
+            <label for="Birthday">Дата рождения:</label>
+            <input type="date" id='bthd' v-model="$v.bthd.$model" :class="status($v.bthd)"  name="Birthday">
+        </div>
+        <div class="error" v-if="!$v.bthd.required">Поле обязательное </div>
+        <div class="input">
+            <label for="Number">Телефон:</label>
+            <input type="number" id='number' v-model.trim="$v.number.$model" :class="status($v.number)"  name="Number">
+        </div>
+        <div class="error" v-if="!$v.number.required">Поле обязательное </div>
+        <div class="input">
+            <label for="male">Пол:</label>
+            <input type="radio" name="male" id='male' v-model="pick" value="male">Мужской
+            <input type="radio" name="male" id="female" v-model="pick" value="female">Женский
+        </div>
+        <div class="input">
+            <label for="group"> Группа Клиентов:</label>
+            <select name="group" v-model="$v.group.$model" class="status($v.number)"   multiple id="group">
+                <option  v-for="item in group" v-bind:value="item" >{{item}}</option>
+            </select>
+        </div>
+        
+        <div class="input">
+            <label for="vrach"> Лечащий врач:</label>
+            <select name="vrach"  id="vrach">
+                <option  v-for="vr in vrach" >{{vr}}</option>
+
+            </select>
+        </div>
+        <input class="input" name="check" type="checkbox"> <label for="check">Не отправлять СМС</label> 
+    </div>
+    <div class="second block">
+        <div class="input"><span class="circle inline"><p>2</p></span>
+            <div class="arrow-1"> <div></div> </div>
+        </div>
+        <h1>Адрес</h1>
+        <div class="input">
+            <label for="Post">Индекс</label>
+            <input type="text" id='post' v-model="$v.post.$model":class="status($v.post)"  name="Post" >
+        </div>
+        <div class="input">
+            <label for="Country">Страна</label>
+            <input type="text" id='country' v-model="$v.country.$model":class="status($v.country)"  name="Country" >
+        </div>
+        <div class="input">
+            <label for="Region">Регион</label>
+            <input type="text" id='region' v-model="$v.region.$model":class="status($v.region)"  name="Region" >
+        </div>
+        <div class="input">
+            <label for="City">Город</label>
+            <input type="text" id='city' v-model.trim="$v.city.$model":class="status($v.city)"  name="City" >
+        </div>
+        <div class="error" v-if="!$v.city.required">Поле обязательное </div>
+        <div class="input">  
+            <label for="Adress">Адрес</label>
+            <input type="text" id='adress'  v-model="$v.adress.$model":class="status($v.adress)"  name="Adress" > <input type="text" class='kv' id='house'  v-model="$v.kv.$model":class="status($v.kv)"  >
+
+        </div>
+    </div>
+    <div class="third block"> 
+        <div class="input"><span class="circle inline"><p>3</p></span>
+    
+        </div>
+        <h1>Документ</h1>
+        <div class="input">
+             <label for="doc"> Тип документа</label>
+            <select name="doc" id="docs"  required>
+               <option  v-for="doc in docs" >{{doc}}</option>
+            </select>
+            
+        </div>
+        <div class="input">
+            <label for="shortNum">Серия</label>
+            <input type="text" id='shortNum' v-model="$v.shortNum.$model":class="status($v.shortNum)"  name="shortNum" >
+        </div>
+        <div class="input">
+            <label for="longNum">Номер</label>
+            <input type="text" id='longNum'  v-model="$v.longNum.$model":class="status($v.longNum)" name="longNum" >
+        </div>
+        <div class="input">
+            <label for="vidan">Кем выдан</label>
+            <input type="text" id='vidan'v-model='vidan' name="vidan" >
+        </div>
+        <div  class="input">
+            <label for="pasdate">Дата выдачи</label>
+            <input type="date" id='pasdate' v-model="$v.pasdate.$model":class="status($v.pasdate)"  name="pasdate">
+        </div>
+        <div class="error" v-if="!$v.pasdate.required">Поле обязательное </div>
+    </div>
+</div><div class="btn"> 
+<button class="button" type="submit" :disabled="submitStatus === 'PENDING'"> Отправить</button>
+
+<p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
+  <p class="typo__p" v-if="submitStatus === 'ERROR'">Заполните пустые поля.</p>
+  <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+
+      <p v-if='errs.lenght'>
+            <b>Пожалуста,исправте ошибки перед отправкой!</b> 
+            <ul>
+                <li v-for="err in errs">{{err}}</li>
+            </ul>
+        </p>
+</div>
+    </form>
+
+    <script src="node_modules/vuelidate/dist/vuelidate.min.js"></script>
+    <script src="node_modules/vuelidate/dist/validators.min.js"></script>
+    <script src="node_modules/vuelidate/lib/validators/minLength.js"></script>
+    <script>
+        var required = validators.required;
+var maxLength = validators.maxLength;
+var num=validators.numeric;
+
+        Vue.use(window.vuelidate.default)
+
+
+        const Client= new Vue({
+            el:'#addClient',
+            data:{
+                submitStatus: null,
+                errs:[],
+                surname:null,
+                name:null,
+                parant:'',
+                bthd:'',
+                number:'',
+                group:['VIP','Проблемные','ОМС'],
+                vrach:['Иванов','Захаров','Чернышева'],
+                pick:'',
+                check:false,
+                post:'',
+                country:'',
+                region:'',
+                city:'',
+                adress:'',
+                kv:'',
+                docs:['Паспорт','Свидетельство о рождении ','Водительское удостоверение'],
+                shortNum:'',
+                longNum:'',
+                vidan:'',
+                pasdate:''
+
+
+            },
+            validations: {
+            	surname: {
+            	required
+                  },
+                name:{
+                    required
+                },
+                number:{
+                    num,
+                    required,
+                    maxLength: maxLength(11)
+                
+                },
+                bthd:{
+                    required,
+                },
+                group:{
+                    required,
+                },
+                city:{
+                    required,
+                },
+                post:{
+                    maxLength: maxLength(6)
+
+                },
+                country:{
+
+                } ,
+                region:{},    
+                adress:{},
+                kv:{},
+                docs:{ 
+               
+                },
+                shortNum:{                    
+                    maxLength: maxLength(4)
+},
+                longNum:{     
+                    num,              
+                     maxLength: maxLength(6)},
+                vidan:{},
+                pasdate:{required}
+         },
+            methods:{
+                status(validation) {
+    	        return {
+      	        error: validation.$error,
+                 dirty: validation.$dirty
+                 }
+               },
+                checkForm()
+                {
+                    console.log('submit!')
+                    this.$v.$touch()
+                    if (this.$v.$invalid) {
+                         this.submitStatus = 'ERROR'
+                         alert("Исправьте все ошибки!")
+                    } else {
+                        // do your submit logic here
+                         this.submitStatus = 'PENDING'
+                         alert("Клиент добавлен!")
+                       }
+                 
+             },
+                validNumber:function(number){
+                    let num=/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/
+                    return num.test(number)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
